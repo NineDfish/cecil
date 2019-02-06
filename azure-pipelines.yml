@@ -18,10 +18,7 @@ jobs:
       dotnet build -c Debug -f netcoreapp2.1 rocks/Test/Mono.Cecil.Rocks.Tests.csproj
     displayName: 'Build .NET Core'
   - script: |
-      dotnet test --no-build -c Debug -f netcoreapp2.1 Test/Mono.Cecil.Tests.csproj
-      dotnet test --no-build -c Debug -f netcoreapp2.1 symbols/mdb/Test/Mono.Cecil.Mdb.Tests.csproj
-      dotnet test --no-build -c Debug -f netcoreapp2.1 symbols/pdb/Test/Mono.Cecil.Pdb.Tests.csproj
-      dotnet test --no-build -c Debug -f netcoreapp2.1 rocks/Test/Mono.Cecil.Rocks.Tests.csproj
+      dotnet test --no-build -c Debug -f netcoreapp2.1 Mono.Cecil.sln
     displayName: 'Test .NET Core'
   - script: |
       dotnet build -c Debug -f net40 Test/Mono.Cecil.Tests.csproj /p:FrameworkPathOverride=/usr/lib/mono/4.0-api
@@ -34,39 +31,19 @@ jobs:
   - task: NuGetCommand@2
     inputs:
       command: 'custom'
-      arguments: 'install NUnit.ConsoleRunner -Version 3.9.0 -OutputDirectory ./packages'
-    displayName: 'Get NUnit.ConsoleRunner'
+      arguments: 'install NUnit.Console -Version 3.9.0 -OutputDirectory ./packages'
+    displayName: 'Get NUnit.Console'
   - script: |
-      mono ./packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./Test/bin/Debug/net40/Mono.Cecil.Tests.dll
-      mono ./packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./symbols/mdb/Test/bin/Debug/net40/Mono.Cecil.Mdb.Tests.dll
-      mono ./packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./symbols/pdb/Test/bin/Debug/net40/Mono.Cecil.Pdb.Tests.dll
-      mono ./packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe rocks/Test/bin/Debug/net40/Mono.Cecil.Rocks.Tests.dll
+      mono ./packages/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./Mono.Cecil.nunit
     displayName: 'Test .NET 4.0 using Mono'
+
 - job: Windows
   pool:
     vmImage: 'vs2017-win2016'
   steps:
   - script: |
-      dotnet build -c Debug -f netcoreapp2.1 Test/Mono.Cecil.Tests.csproj
-      dotnet build -c Debug -f netcoreapp2.1 symbols/mdb/Test/Mono.Cecil.Mdb.Tests.csproj
-      dotnet build -c Debug -f netcoreapp2.1 symbols/pdb/Test/Mono.Cecil.Pdb.Tests.csproj
-      dotnet build -c Debug -f netcoreapp2.1 rocks/Test/Mono.Cecil.Rocks.Tests.csproj
-    displayName: 'Build .NET Core'
+      dotnet build -c Debug Mono.Cecil.sln
+    displayName: 'Build'
   - script: |
-      dotnet build -c Debug -f net40 Test/Mono.Cecil.Tests.csproj
-      dotnet build -c Debug -f net40 symbols/mdb/Test/Mono.Cecil.Mdb.Tests.csproj
-      dotnet build -c Debug -f net40 symbols/pdb/Test/Mono.Cecil.Pdb.Tests.csproj
-      dotnet build -c Debug -f net40 rocks/Test/Mono.Cecil.Rocks.Tests.csproj
-    displayName: 'Build .NET 4.0'
-  - script: |
-      dotnet test --no-build -c Debug -f netcoreapp2.1 Test/Mono.Cecil.Tests.csproj
-      dotnet test --no-build -c Debug -f netcoreapp2.1 symbols/mdb/Test/Mono.Cecil.Mdb.Tests.csproj
-      dotnet test --no-build -c Debug -f netcoreapp2.1 symbols/pdb/Test/Mono.Cecil.Pdb.Tests.csproj
-      dotnet test --no-build -c Debug -f netcoreapp2.1 rocks/Test/Mono.Cecil.Rocks.Tests.csproj
-    displayName: 'Test .NET Core'
-  - script: |
-      dotnet test --no-build -c Debug -f net40 Test/Mono.Cecil.Tests.csproj
-      dotnet test --no-build -c Debug -f net40 symbols/mdb/Test/Mono.Cecil.Mdb.Tests.csproj
-      dotnet test --no-build -c Debug -f net40 symbols/pdb/Test/Mono.Cecil.Pdb.Tests.csproj
-      dotnet test --no-build -c Debug -f net40 rocks/Test/Mono.Cecil.Rocks.Tests.csproj
-    displayName: 'Test .NET 4.0'
+      dotnet test --no-build -c Debug Mono.Cecil.sln
+    displayName: 'Test'
